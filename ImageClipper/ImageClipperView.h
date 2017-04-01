@@ -3,8 +3,8 @@
 //
 
 #pragma once
-
-
+#include <WinUser.h>
+#include "ControlBar.h"
 class CImageClipperView : public CScrollView
 {
 protected: // create from serialization only
@@ -14,7 +14,7 @@ protected: // create from serialization only
 // Attributes
 public:
 	CImageClipperDoc* GetDocument() const;
-
+	ControlBar* pDlg;
 // Operations
 public:
 
@@ -41,6 +41,8 @@ protected:
 // Generated message map functions
 protected:
 	DECLARE_MESSAGE_MAP()
+public:
+	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // debug version in ImageClipperView.cpp

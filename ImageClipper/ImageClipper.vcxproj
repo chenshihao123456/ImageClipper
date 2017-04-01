@@ -43,6 +43,7 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <IntDir>$(SolutionDir)tmp</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -101,6 +102,7 @@
     <Text Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ControlBar.h" />
     <ClInclude Include="ImageClipper.h" />
     <ClInclude Include="ImageClipperDoc.h" />
     <ClInclude Include="ImageClipperView.h" />
@@ -110,6 +112,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="ControlBar.cpp" />
     <ClCompile Include="ImageClipper.cpp" />
     <ClCompile Include="ImageClipperDoc.cpp" />
     <ClCompile Include="ImageClipperView.cpp" />

@@ -36,11 +36,16 @@ END_MESSAGE_MAP()
 CImageClipperView::CImageClipperView()
 {
 	// TODO: add construction code here
-
+	pDlg = new ControlBar();
+	pDlg->Create(IDD_CONTROL_BAR);
 }
 
 CImageClipperView::~CImageClipperView()
 {
+	if (pDlg!=NULL)
+	{
+		delete pDlg;
+	}
 }
 
 BOOL CImageClipperView::PreCreateWindow(CREATESTRUCT& cs)
@@ -132,4 +137,20 @@ void CImageClipperView::OnMouseMove(UINT nFlags, CPoint point)
 	GetClientRect(&rect);
 	ponints.Format(_T("(%d, %d), (%d, %d)"), point.x, point.y, rect.right, rect.bottom);
 	pMainFrame->m_wndStatusBar.SetPaneText(0, ponints);
+
+	//获取视图窗口的大小
+	if (point.y > rect.bottom*0.9)
+	{
+		//ControlBar* pDlg = new ControlBar();
+		//pDlg->Create(IDD_DIALOG_CONTROL);
+		pDlg->SetWindowPos(NULL, 350, 600,0,0,SWP_SHOWWINDOW|SWP_NOSIZE);
+		pDlg->ShowWindow(SW_SHOWNORMAL);
+	}
+	else
+	{		
+		//pDlg->RunModalLoop();		
+		pDlg->SetWindowPos(NULL,350,600,0,0,SWP_HIDEWINDOW|SWP_NOSIZE);
+		//pDlg->ShowWindow(SW_SHOWNORMAL);
+	}
+	
 }
