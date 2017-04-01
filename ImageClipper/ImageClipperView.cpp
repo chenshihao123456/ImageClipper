@@ -11,6 +11,8 @@
 
 #include "ImageClipperDoc.h"
 #include "ImageClipperView.h"
+#include "MainFrm.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -26,6 +28,7 @@ BEGIN_MESSAGE_MAP(CImageClipperView, CScrollView)
 	ON_COMMAND(ID_FILE_PRINT, &CScrollView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_DIRECT, &CScrollView::OnFilePrint)
 	ON_COMMAND(ID_FILE_PRINT_PREVIEW, &CScrollView::OnFilePrintPreview)
+	ON_WM_MOUSEMOVE()
 END_MESSAGE_MAP()
 
 // CImageClipperView construction/destruction
@@ -117,3 +120,16 @@ CImageClipperDoc* CImageClipperView::GetDocument() const // non-debug version is
 
 
 // CImageClipperView message handlers
+
+
+void CImageClipperView::OnMouseMove(UINT nFlags, CPoint point)
+{
+	// TODO: Add your message handler code here and/or call default
+	CScrollView::OnMouseMove(nFlags, point);
+	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
+	CString ponints;
+	CRect rect;
+	GetClientRect(&rect);
+	ponints.Format(_T("(%d, %d), (%d, %d)"), point.x, point.y, rect.right, rect.bottom);
+	pMainFrame->m_wndStatusBar.SetPaneText(0, ponints);
+}
