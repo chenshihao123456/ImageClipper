@@ -36,8 +36,10 @@ END_MESSAGE_MAP()
 CImageClipperView::CImageClipperView()
 {
 	// TODO: add construction code here
+	
 	pDlg = new ControlBar();
 	pDlg->Create(IDD_CONTROL_BAR);
+	pDlg->GetWindowRect(&m_rectControl);
 }
 
 CImageClipperView::~CImageClipperView()
@@ -81,6 +83,8 @@ void CImageClipperView::OnInitialUpdate()
 	// TODO: calculate the total size of this view
 	sizeTotal.cx = sizeTotal.cy = 100;
 	SetScrollSizes(MM_TEXT, sizeTotal);
+
+	GetClientRect(&m_rectClient);
 }
 
 
@@ -133,23 +137,22 @@ void CImageClipperView::OnMouseMove(UINT nFlags, CPoint point)
 	CScrollView::OnMouseMove(nFlags, point);
 	CMainFrame* pMainFrame = (CMainFrame*)AfxGetMainWnd();
 	CString ponints;
-	CRect rect;
-	GetClientRect(&rect);
-	ponints.Format(_T("(%d, %d), (%d, %d)"), point.x, point.y, rect.right, rect.bottom);
+	ponints.Format(_T("(%d, %d)"), point.x, point.y);
 	pMainFrame->m_wndStatusBar.SetPaneText(0, ponints);
-
+	GetClientRect(&m_rectClient);
 	//获取视图窗口的大小
-	if (point.y > rect.bottom*0.9)
+	if (point.y > m_rectClient.bottom*0.9)
 	{
 		//ControlBar* pDlg = new ControlBar();
 		//pDlg->Create(IDD_DIALOG_CONTROL);
-		pDlg->SetWindowPos(NULL, 350, 600,0,0,SWP_SHOWWINDOW|SWP_NOSIZE);
+		pDlg->SetWindowPos(NULL, (m_rectClient.Width()-m_rectControl.Width())/2, m_rectClient.bottom,0,0,SWP_SHOWWINDOW|SWP_NOSIZE);
 		pDlg->ShowWindow(SW_SHOWNORMAL);
+
 	}
 	else
 	{		
 		//pDlg->RunModalLoop();		
-		pDlg->SetWindowPos(NULL,350,600,0,0,SWP_HIDEWINDOW|SWP_NOSIZE);
+		pDlg->SetWindowPos(NULL, (m_rectClient.Width() - m_rectControl.Width()) / 2, m_rectClient.bottom,0,0,SWP_HIDEWINDOW|SWP_NOSIZE);
 		//pDlg->ShowWindow(SW_SHOWNORMAL);
 	}
 	

@@ -15,6 +15,8 @@ protected: // create from serialization only
 public:
 	CImageClipperDoc* GetDocument() const;
 	ControlBar* pDlg;
+	CRect m_rectClient;
+	CRect m_rectControl;
 // Operations
 public:
 
