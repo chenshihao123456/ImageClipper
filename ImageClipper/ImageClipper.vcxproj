@@ -129,11 +129,20 @@
     <None Include="res\ImageClipper.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="res\icon1.ico" />
     <Image Include="res\ImageClipper.ico" />
     <Image Include="res\ImageClipperDoc.ico" />
+    <Image Include="res\left-1.ico" />
+    <Image Include="res\left.ico" />
+    <Image Include="res\right.ico" />
     <Image Include="res\Toolbar.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties RESOURCE_FILE="ImageClipper.rc" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

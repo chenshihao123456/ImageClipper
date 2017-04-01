@@ -1,4 +1,5 @@
 #pragma once
+#include "afxwin.h"
 
 
 // ControlBar dialog
@@ -6,6 +7,10 @@
 class ControlBar : public CDialogEx
 {
 	DECLARE_DYNAMIC(ControlBar)
+
+public:
+	CBitmap leftBitMap;
+	CBitmap rightBitMap;
 
 public:
 	ControlBar(CWnd* pParent = NULL);   // standard constructor
@@ -21,4 +26,6 @@ protected:
 public:
 	virtual BOOL OnInitDialog();
 	afx_msg void OnPaint();
+	CButton buttonPrev;
+	CButton buttonNext;
 };

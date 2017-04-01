@@ -83,5 +83,17 @@
     <Image Include="res\Toolbar.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="res\icon1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\left.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\right.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\left-1.ico">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

@@ -71,8 +71,8 @@ IDD_CONTROL_BAR DIALOGEX 0, 0, 331, 31
 STYLE DS_SETFONT | DS_FIXEDSYS | WS_POPUP | WS_SYSMENU
 FONT 8, "MS Shell Dlg", 400, 0, 0x1
 BEGIN
-    PUSHBUTTON      "Prevision",IDC_BUTTON_PREV,45,1,50,28,BS_CENTER
-    PUSHBUTTON      "Next",IDC_BUTTON_NEXT,227,1,50,28
+    PUSHBUTTON      "",IDC_BUTTON_PREV,45,1,50,28,BS_BITMAP | BS_CENTER
+    PUSHBUTTON      "Next",IDC_BUTTON_NEXT,227,1,50,28,BS_BITMAP
 END
 
 
@@ -93,6 +93,17 @@ BEGIN
 END
 #endif    // APSTUDIO_INVOKED
 
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDI_ICON_LEFT           ICON                    "res\\left.ico"
+IDI_ICON_RIGHT          ICON                    "res\\right.ico"
+IDI_ICON_LEFT_1         ICON                    "res\\left-1.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
