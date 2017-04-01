@@ -1,4 +1,5 @@
 
+
 // ImageClipperView.cpp : implementation of the CImageClipperView class
 //
 
