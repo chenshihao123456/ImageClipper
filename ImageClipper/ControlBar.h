@@ -1,7 +1,6 @@
 #pragma once
 #include "afxwin.h"
 
-
 // ControlBar dialog
 
 class ControlBar : public CDialogEx
@@ -28,4 +27,9 @@ public:
 	afx_msg void OnPaint();
 	CButton buttonPrev;
 	CButton buttonNext;
+	afx_msg void OnBnClickedButtonPrev();
+	afx_msg void OnBnClickedButtonNext();
+
+	//CImageClipperView m;
+
 };

@@ -12,6 +12,9 @@
 #include "ImageClipperDoc.h"
 
 #include <propkey.h>
+#include<shlwapi.h>
+#pragma comment(lib,"shlwapi")
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -30,7 +33,9 @@ END_MESSAGE_MAP()
 CImageClipperDoc::CImageClipperDoc()
 {
 	// TODO: add one-time construction code here
-
+	m_index_path_image = -1;
+	m_imageNameList.clear();
+	m_currentImagePath = _T("");
 }
 
 CImageClipperDoc::~CImageClipperDoc()
@@ -49,7 +54,56 @@ BOOL CImageClipperDoc::OnNewDocument()
 }
 
 
+void  CImageClipperDoc::findAllImageFile(CString path, std::vector<CString>& out_files)
+{
+	CFileFind ff;
+	if (path.Right(1) != "\\") {
+		//path.Append(_T("\\"));
+		path.Format(_T("%s%s"), path.GetBuffer(), "\\");
+		//path += CString("\\");
+	}
+	path += CString("*.*");
+	BOOL ret = ff.FindFile(path);
+	while (ret)
+	{
+		ret = ff.FindNextFile();
 
+		if (ff.IsDirectory() && !ff.IsDots())
+		{
+			CString path = ff.GetFilePath();
+			findAllImageFile(path, out_files);
+		}
+		else if (!ff.IsDirectory() && !ff.IsDots())
+		{
+			CString name = ff.GetFileName();
+			int index_dot = name.Find('.');
+			int length_ext = name.GetLength() - index_dot;
+			CString extension = name.Right(length_ext);
+
+			if (extension.Compare(_T(".jpg")) || extension.Compare(_T(".png")) || extension.Compare(_T(".JPEG")))
+			{
+				CString path = ff.GetFilePath();
+				out_files.push_back(path);
+			}
+		}
+
+
+	}
+
+}
+
+void CImageClipperDoc::findIndexImage()
+{
+	for (int i = 0; i < m_imageNameList.size(); i++)
+	{
+		if (m_currentImagePath == m_imageNameList[i])
+		{
+			m_index_path_image = i;
+			return;
+		}
+	}
+	m_index_path_image = -1;
+}
 
 // CImageClipperDoc serialization
 
@@ -62,11 +116,33 @@ void CImageClipperDoc::Serialize(CArchive& ar)
 	else
 	{
 		// TODO: add loading code here
-		if(!img.IsNull())
+
+		m_currentImagePath = ar.GetFile()->GetFilePath();
+		m_imageRootPath = m_currentImagePath;
+		PathRemoveFileSpec(m_imageRootPath.GetBuffer());
+		m_imageRootPath.Trim();
+		//将目录下的所有图片文件名加到缓存中sssss
+		if (m_imageNameList.empty())
+			findAllImageFile(m_imageRootPath, m_imageNameList);
+		findIndexImage();
+		if (!img.IsNull())
 		{
 			img.Destroy();
 		}
-		img.Load(ar.GetFile()->GetFilePath());
+		img.Load(m_currentImagePath);
+	}
+}
+
+void CImageClipperDoc::loadImage()
+{
+	if (!img.IsNull())
+	{
+		img.Destroy();
+	}
+	if (m_index_path_image >= 0 && m_index_path_image < m_imageNameList.size())
+	{
+		m_currentImagePath = m_imageNameList[m_index_path_image];
+		img.Load(m_currentImagePath);
 	}
 }
 
@@ -81,7 +157,7 @@ void CImageClipperDoc::OnDrawThumbnail(CDC& dc, LPRECT lprcBounds)
 	CString strText = _T("TODO: implement thumbnail drawing here");
 	LOGFONT lf;
 
-	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT) GetStockObject(DEFAULT_GUI_FONT));
+	CFont* pDefaultGUIFont = CFont::FromHandle((HFONT)GetStockObject(DEFAULT_GUI_FONT));
 	pDefaultGUIFont->GetLogFont(&lf);
 	lf.lfHeight = 36;
 
@@ -140,3 +216,22 @@ void CImageClipperDoc::Dump(CDumpContext& dc) const
 
 
 // CImageClipperDoc commands
+
+
+
+
+
+bool CImageClipperDoc::GetImage()
+{
+	if ((m_index_path_image < 0) ||
+		(m_index_path_image >= m_imageNameList.size()) ||
+		m_imageNameList.empty())
+	{
+		return false;
+	}
+	if (!img.IsNull())
+	{
+		img.Destroy();
+	}
+	img.Load(m_imageNameList[m_index_path_image]);
+}

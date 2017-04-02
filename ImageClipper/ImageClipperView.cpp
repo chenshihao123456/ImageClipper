@@ -74,6 +74,33 @@ void CImageClipperView::OnDraw(CDC* pDC)
 		SetScrollSizes(MM_TEXT, CSize(pDoc->img.GetWidth()+100, pDoc->img.GetHeight()+100));
 		pDoc->img.Draw(pDC->GetSafeHdc(), 0, 0);
 	}
+	else
+	{
+		return;
+	}
+	if (pDoc->m_index_path_image == -1 || pDoc->m_imageNameList.empty())
+	{
+		//初始化状态
+		pDlg->buttonPrev.EnableWindow(FALSE);
+		pDlg->buttonNext.EnableWindow(FALSE);
+	}
+	else if ((pDoc->m_index_path_image) == 0)
+	{
+		//左向按钮不可用;
+		pDlg->buttonPrev.EnableWindow(FALSE);	
+		pDlg->buttonNext.EnableWindow(TRUE);
+	}
+	else if ((pDoc->m_index_path_image) == (pDoc->m_imageNameList.size()-1))
+	{
+		//右向按钮不可用;
+		pDlg->buttonPrev.EnableWindow(TRUE);
+		pDlg->buttonNext.EnableWindow(FALSE);
+	}
+	else
+	{
+		pDlg->buttonPrev.EnableWindow(TRUE);
+		pDlg->buttonNext.EnableWindow(TRUE);
+	}
 }
 
 void CImageClipperView::OnInitialUpdate()

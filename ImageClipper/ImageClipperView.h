@@ -5,6 +5,7 @@
 #pragma once
 #include <WinUser.h>
 #include "ControlBar.h"
+
 class CImageClipperView : public CScrollView
 {
 protected: // create from serialization only

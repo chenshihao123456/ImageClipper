@@ -5,7 +5,9 @@
 #include "ImageClipper.h"
 #include "ControlBar.h"
 #include "afxdialogex.h"
-
+#include "MainFrm.h"
+#include "ImageClipperDoc.h"
+#include "ImageClipperView.h"
 
 // ControlBar dialog
 
@@ -14,6 +16,8 @@ IMPLEMENT_DYNAMIC(ControlBar, CDialogEx)
 ControlBar::ControlBar(CWnd* pParent /*=NULL*/)
 	: CDialogEx(ControlBar::IDD, pParent)
 {
+
+
 }
 
 ControlBar::~ControlBar()
@@ -30,6 +34,8 @@ void ControlBar::DoDataExchange(CDataExchange* pDX)
 
 BEGIN_MESSAGE_MAP(ControlBar, CDialogEx)
 	ON_WM_PAINT()
+	ON_BN_CLICKED(IDC_BUTTON_PREV, &ControlBar::OnBnClickedButtonPrev)
+	ON_BN_CLICKED(IDC_BUTTON_NEXT, &ControlBar::OnBnClickedButtonNext)
 END_MESSAGE_MAP()
 
 
@@ -64,7 +70,8 @@ BOOL ControlBar::OnInitDialog()
 		FreeLibrary(hInst);
 	}
 
-	
+	buttonPrev.EnableWindow(FALSE);
+	buttonNext.EnableWindow(FALSE);
 
 	return TRUE;  // return TRUE unless you set the focus to a control
 				  // EXCEPTION: OCX Property Pages should return FALSE
@@ -83,4 +90,36 @@ void ControlBar::OnPaint()
 	//dc.FillSolidRect(rect, RGB(0, 0, 0));
 	
 
+}
+
+
+void ControlBar::OnBnClickedButtonPrev()
+{
+	// TODO: Add your control notification handler code here
+	CMainFrame *pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
+	CImageClipperView* pView = (CImageClipperView*)pMain->GetActiveView();
+    CImageClipperDoc* pDoc =  pView->GetDocument();
+	if (pDoc->m_index_path_image<=0)
+	{
+		return;
+	}
+	pDoc->m_index_path_image--;
+	pDoc->loadImage();
+	pView->Invalidate();
+}
+
+
+void ControlBar::OnBnClickedButtonNext()
+{
+	// TODO: Add your control notification handler code here
+	CMainFrame *pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
+	CImageClipperView* pView = (CImageClipperView*)pMain->GetActiveView();
+	CImageClipperDoc* pDoc = pView->GetDocument();	
+	if (pDoc->m_index_path_image > (pDoc->m_imageNameList.size()-1))
+	{
+		return;
+	}
+	pDoc->m_index_path_image++;
+	pDoc->loadImage();
+	pView->Invalidate();
 }

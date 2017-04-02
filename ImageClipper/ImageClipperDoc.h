@@ -4,7 +4,7 @@
 
 
 #pragma once
-
+#include <vector>
 
 class CImageClipperDoc : public CDocument
 {
@@ -15,9 +15,16 @@ protected: // create from serialization only
 // Attributes
 public:
 	CImage img;
+	CString m_currentImagePath;
+	CString m_imageRootPath;
+	std::vector<CString> m_imageNameList;
+	int m_index_path_image;
+
 // Operations
 public:
-
+	void findAllImageFile(CString path, std::vector<CString>& out_files);
+	void findIndexImage();
+	void loadImage();
 // Overrides
 public:
 	virtual BOOL OnNewDocument();
@@ -45,4 +52,6 @@ protected:
 	// Helper function that sets search content for a Search Handler
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
+public:
+	bool GetImage();
 };
