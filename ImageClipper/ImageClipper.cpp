@@ -119,7 +119,7 @@ BOOL CImageClipperApp::InitInstance()
 	// app was launched with /RegServer, /Register, /Unregserver or /Unregister.
 	if (!ProcessShellCommand(cmdInfo))
 		return FALSE;
-
+	//m_pMainWnd->SetWindowTextW(_T("Í¼Æ¬±ê×¢¹¤¾ß"));
 	// The one and only window has been initialized, so show and update it
 	m_pMainWnd->ShowWindow(SW_MAXIMIZE);
 	m_pMainWnd->UpdateWindow();

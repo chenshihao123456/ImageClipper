@@ -78,6 +78,7 @@ void CImageClipperView::OnDraw(CDC* pDC)
 	{
 		return;
 	}
+	//设置控制面板的状态
 	if (pDoc->m_index_path_image == -1 || pDoc->m_imageNameList.empty())
 	{
 		//初始化状态

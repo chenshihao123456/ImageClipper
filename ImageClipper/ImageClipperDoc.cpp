@@ -118,10 +118,7 @@ void CImageClipperDoc::Serialize(CArchive& ar)
 		// TODO: add loading code here
 
 		m_currentImagePath = ar.GetFile()->GetFilePath();
-		m_imageRootPath = m_currentImagePath;
-		PathRemoveFileSpec(m_imageRootPath.GetBuffer());
-		m_imageRootPath.Trim();
-		//将目录下的所有图片文件名加到缓存中sssss
+		m_imageRootPath = m_currentImagePath.Left(m_currentImagePath.ReverseFind('\\'));
 		if (m_imageNameList.empty())
 			findAllImageFile(m_imageRootPath, m_imageNameList);
 		findIndexImage();
@@ -143,6 +140,11 @@ void CImageClipperDoc::loadImage()
 	{
 		m_currentImagePath = m_imageNameList[m_index_path_image];
 		img.Load(m_currentImagePath);
+		int lenName = m_currentImagePath.GetLength() - m_imageRootPath.GetLength()-1;
+		CString imageName = m_currentImagePath.Right(lenName);
+		AfxGetApp()->m_pMainWnd->SetWindowTextW(
+			imageName
+			+CString("-ImageClipper"));
 	}
 }
 
