@@ -6,6 +6,32 @@
 #pragma once
 #include <vector>
 
+class MyRectTracker:public CRectTracker
+{
+public:
+	MyRectTracker() :m_rect_l(CRect(0, 0, 0, 0)), m_is_chosen(FALSE) {
+		m_nStyle = CRectTracker::solidLine | CRectTracker::resizeInside;
+		m_rect.NormalizeRect();
+		m_nHandleSize = 8;
+	}
+
+	int checkHit(CPoint pt)
+	{
+		return HitTest(pt);
+	}
+	CRect& getRectDP()
+	{
+		return m_rect;
+	}
+
+public:
+	CRect m_rect_l; //逻辑坐标;
+	BOOL m_is_chosen; //是否被选择
+};
+
+
+
+
 class CImageClipperDoc : public CDocument
 {
 protected: // create from serialization only
@@ -19,6 +45,12 @@ public:
 	CString m_imageRootPath;
 	std::vector<CString> m_imageNameList;
 	int m_index_path_image;
+
+	//保存选择区域的rectTracker;
+	std::vector<MyRectTracker*> m_rectTrackers;
+	int m_index_current_selected;
+
+
 
 // Operations
 public:

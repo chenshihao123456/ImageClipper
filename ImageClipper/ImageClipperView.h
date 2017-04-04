@@ -18,6 +18,12 @@ public:
 	ControlBar* pDlg;
 	CRect m_rectClient;
 	CRect m_rectControl;
+
+	CRectTracker m_rectTracker;
+	BOOL m_isChosen;
+	CRect m_rectBox;
+
+
 // Operations
 public:
 
@@ -46,6 +52,8 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	afx_msg void OnMouseMove(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
+	afx_msg void OnLButtonUp(UINT nFlags, CPoint point);
 };
 
 #ifndef _DEBUG  // debug version in ImageClipperView.cpp

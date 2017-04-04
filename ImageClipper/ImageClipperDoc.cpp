@@ -36,10 +36,23 @@ CImageClipperDoc::CImageClipperDoc()
 	m_index_path_image = -1;
 	m_imageNameList.clear();
 	m_currentImagePath = _T("");
+	m_rectTrackers.clear();
+	m_index_current_selected = -1;
 }
 
 CImageClipperDoc::~CImageClipperDoc()
 {
+	//ÊÍ·ÅÄÚ´æ
+	int num_box = m_rectTrackers.size();
+	for (int i = 0; i < num_box; i++)
+	{
+		if (m_rectTrackers[i] != NULL)
+		{
+			delete m_rectTrackers[i];
+			m_rectTrackers[i] = NULL;
+		}
+	}
+
 }
 
 BOOL CImageClipperDoc::OnNewDocument()
