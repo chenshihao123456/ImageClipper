@@ -19,7 +19,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v140</PlatformToolset>
+    <PlatformToolset>v110_xp</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
     <UseOfMfc>Dynamic</UseOfMfc>
   </PropertyGroup>
@@ -129,12 +129,8 @@
     <None Include="res\ImageClipper.rc2" />
   </ItemGroup>
   <ItemGroup>
-    <Image Include="res\icon1.ico" />
     <Image Include="res\ImageClipper.ico" />
     <Image Include="res\ImageClipperDoc.ico" />
-    <Image Include="res\left-1.ico" />
-    <Image Include="res\left.ico" />
-    <Image Include="res\right.ico" />
     <Image Include="res\Toolbar.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
