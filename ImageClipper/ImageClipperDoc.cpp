@@ -70,13 +70,14 @@ BOOL CImageClipperDoc::OnNewDocument()
 void  CImageClipperDoc::findAllImageFile(CString path, std::vector<CString>& out_files)
 {
 	CFileFind ff;
+	CString tmp_path;
 	if (path.Right(1) != "\\") {
-		//path.Append(_T("\\"));
-		path.Format(_T("%s%s"), path.GetBuffer(), "\\");
-		//path += CString("\\");
+		//path.Format(_T("%s%s"), path.GetBuffer(), "\\");
+		tmp_path.Format(_T("%s%s"), path.GetBuffer(), "\\");
+
 	}
-	path += CString("*.*");
-	BOOL ret = ff.FindFile(path);
+	tmp_path += CString("*.*");
+	BOOL ret = ff.FindFile(tmp_path);
 	while (ret)
 	{
 		ret = ff.FindNextFile();
