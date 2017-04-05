@@ -101,9 +101,6 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-IDI_ICON_LEFT           ICON                    "res\\left.ico"
-IDI_ICON_RIGHT          ICON                    "res\\right.ico"
-IDI_ICON_LEFT_1         ICON                    "res\\left-1.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
