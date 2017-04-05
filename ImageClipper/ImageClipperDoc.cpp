@@ -159,6 +159,9 @@ void CImageClipperDoc::loadImage()
 		AfxGetApp()->m_pMainWnd->SetWindowTextW(
 			imageName
 			+CString("-ImageClipper"));
+
+		m_rectTrackers.clear();
+		m_index_current_selected = -1;
 	}
 }
 
