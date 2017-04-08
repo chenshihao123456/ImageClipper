@@ -44,15 +44,7 @@ CImageClipperDoc::CImageClipperDoc()
 CImageClipperDoc::~CImageClipperDoc()
 {
 	//释放内存
-	//int num_box = m_rectTrackers.size();
-	//for (int i = 0; i < num_box; i++)
-	//{
-	//	if (m_rectTrackers[i] != NULL)
-	//	{
-	//		delete m_rectTrackers[i];
-	//		m_rectTrackers[i] = NULL;
-	//	}
-	//}
+	freeCurrentImageZone();
 
 	pimages_info it_begin = m_images_clipper_result.begin();
 	pimages_info it_end = m_images_clipper_result.end();
@@ -172,17 +164,8 @@ void CImageClipperDoc::Serialize(CArchive& ar)
 
 void CImageClipperDoc::loadImage()
 {
-	//判断上一个操作是否保存，如果没保存需要释放
-	//int num_box = m_rectTrackers.size();
-	//for (int i = 0; i < num_box; i++)
-	//{
-	//	if (m_rectTrackers[i] != NULL)
-	//	{
-	//		delete m_rectTrackers[i];
-	//		m_rectTrackers[i] = NULL;
-	//	}
-	//} 
 
+	freeCurrentImageZone();
 	if (!img.IsNull())
 	{
 		img.Destroy();
@@ -305,4 +288,25 @@ bool CImageClipperDoc::saveRectImageInfor()
 	//并且更新到文件中!
 
 	return true;
+}
+
+
+// 释放当前处理图片的空间
+void CImageClipperDoc::freeCurrentImageZone()
+{
+	//查询某个键是否存在,也就是没有保存当前的操作！，如果不存在，就释放该空间
+	CString nameImage = m_currentImagePath.Mid(m_currentImagePath.ReverseFind('\\') + 1);
+	if (m_images_clipper_result.count(nameImage) <= 0)
+	{
+		int num_box = m_rectTrackers.size();
+		for (int i = 0; i < num_box; i++)
+		{
+			if (m_rectTrackers[i] != NULL)
+			{
+				delete m_rectTrackers[i];
+				m_rectTrackers[i] = NULL;
+			}
+		}
+	}
+
 }

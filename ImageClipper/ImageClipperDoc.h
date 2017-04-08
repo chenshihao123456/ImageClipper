@@ -103,4 +103,6 @@ public:
 	BOOL deleteRectCurren();
 	// 保存当前的信息到内存中
 	bool saveRectImageInfor();
+	// 释放当前处理图片的空间
+	void freeCurrentImageZone();
 };

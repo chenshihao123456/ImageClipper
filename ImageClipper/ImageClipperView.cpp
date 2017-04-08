@@ -307,6 +307,3 @@ void CImageClipperView::OnLButtonUp(UINT nFlags, CPoint point)
 
 
 
-
-
-
