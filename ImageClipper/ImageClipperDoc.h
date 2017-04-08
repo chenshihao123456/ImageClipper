@@ -5,6 +5,7 @@
 
 #pragma once
 #include <vector>
+#include <map>
 #include "MainFrm.h"
 
 
@@ -39,6 +40,8 @@ public:
 
 
 
+typedef std::map<CString, std::vector<MyRectTracker*>> images_info;
+typedef std::map<CString, std::vector<MyRectTracker*>>::iterator pimages_info;
 
 class CImageClipperDoc : public CDocument
 {
@@ -54,12 +57,14 @@ public:
 	std::vector<CString> m_imageNameList; 
 	int m_index_path_image;
 
-	//保存选择区域的rectTracker;
+	//保存当前单张图片选择区域的rectTracker;
 	std::vector<MyRectTracker*> m_rectTrackers;//裁剪的图片坐标
 	int m_index_current_selected;              //切换图片
 	std::vector<MyRectTracker*>::iterator it_current; //删除图片
 
-	
+	//记录下本目录下所有的的操作
+	images_info m_images_clipper_result;
+
 
 // Operations
 public:
@@ -94,6 +99,8 @@ protected:
 	void SetSearchContent(const CString& value);
 #endif // SHARED_HANDLERS
 public:
-	bool GetImage();
+
 	BOOL deleteRectCurren();
+	// 保存当前的信息到内存中
+	bool saveRectImageInfor();
 };

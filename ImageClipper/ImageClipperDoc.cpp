@@ -44,15 +44,36 @@ CImageClipperDoc::CImageClipperDoc()
 CImageClipperDoc::~CImageClipperDoc()
 {
 	//释放内存
-	int num_box = m_rectTrackers.size();
-	for (int i = 0; i < num_box; i++)
+	//int num_box = m_rectTrackers.size();
+	//for (int i = 0; i < num_box; i++)
+	//{
+	//	if (m_rectTrackers[i] != NULL)
+	//	{
+	//		delete m_rectTrackers[i];
+	//		m_rectTrackers[i] = NULL;
+	//	}
+	//}
+
+	pimages_info it_begin = m_images_clipper_result.begin();
+	pimages_info it_end = m_images_clipper_result.end();
+	while (it_begin != it_end)
 	{
-		if (m_rectTrackers[i] != NULL)
+		if (!((it_begin->second).empty()))
 		{
-			delete m_rectTrackers[i];
-			m_rectTrackers[i] = NULL;
+			for (int i = 0; i < it_begin->second.size(); i++)
+			{
+				if (it_begin->second[i]!=NULL)
+				{
+					delete it_begin->second[i];
+					it_begin->second[i] = NULL;
+				}
+			}
 		}
+
+		it_begin++;
 	}
+
+
 
 }
 
@@ -151,6 +172,17 @@ void CImageClipperDoc::Serialize(CArchive& ar)
 
 void CImageClipperDoc::loadImage()
 {
+	//判断上一个操作是否保存，如果没保存需要释放
+	//int num_box = m_rectTrackers.size();
+	//for (int i = 0; i < num_box; i++)
+	//{
+	//	if (m_rectTrackers[i] != NULL)
+	//	{
+	//		delete m_rectTrackers[i];
+	//		m_rectTrackers[i] = NULL;
+	//	}
+	//} 
+
 	if (!img.IsNull())
 	{
 		img.Destroy();
@@ -168,6 +200,9 @@ void CImageClipperDoc::loadImage()
 		m_rectTrackers.clear();
 		m_index_current_selected = -1;
 		it_current = m_rectTrackers.begin();
+
+		CString nameImage = m_currentImagePath.Mid(m_currentImagePath.ReverseFind('\\') + 1);
+		m_rectTrackers = m_images_clipper_result[nameImage];
 	}
 }
 
@@ -243,25 +278,6 @@ void CImageClipperDoc::Dump(CDumpContext& dc) const
 // CImageClipperDoc commands
 
 
-
-
-
-bool CImageClipperDoc::GetImage()
-{
-	if ((m_index_path_image < 0) ||
-		(m_index_path_image >= m_imageNameList.size()) ||
-		m_imageNameList.empty())
-	{
-		return false;
-	}
-	if (!img.IsNull())
-	{
-		img.Destroy();
-	}
-	img.Load(m_imageNameList[m_index_path_image]);
-}
-
-
 BOOL CImageClipperDoc::deleteRectCurren()
 {
 	if (m_index_current_selected == -1)
@@ -277,4 +293,16 @@ BOOL CImageClipperDoc::deleteRectCurren()
 		m_index_current_selected = -1;
 	}
 	return TRUE;
+}
+
+
+// 保存当前的信息到内存中
+bool CImageClipperDoc::saveRectImageInfor()
+{
+	//从缓存，保存到内存中!
+	CString nameImage = m_currentImagePath.Mid(m_currentImagePath.ReverseFind('\\')+1);
+	m_images_clipper_result[nameImage] = m_rectTrackers;
+	//并且更新到文件中!
+
+	return true;
 }

@@ -90,7 +90,7 @@ void CImageClipperView::OnDraw(CDC* pDC)
 	{
 		return;
 	}
-	//设置控制面板的状态
+	//设置控制面板前后的状态
 	if (pDoc->m_index_path_image == -1 || pDoc->m_imageNameList.empty())
 	{
 		//初始化状态
@@ -114,6 +114,16 @@ void CImageClipperView::OnDraw(CDC* pDC)
 		pDlg->buttonPrev.EnableWindow(TRUE);
 		pDlg->buttonNext.EnableWindow(TRUE);
 	}
+	//设置控制面板保存的状态
+	if (pDoc->m_rectTrackers.empty())
+	{
+		pDlg->buttonSave.EnableWindow(FALSE);
+	}
+	else
+	{
+		pDlg->buttonSave.EnableWindow(TRUE);
+	}
+
 	//绘制矩形框
 
 	if (!pDoc->m_rectTrackers.empty())

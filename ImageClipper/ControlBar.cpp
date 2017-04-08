@@ -29,6 +29,7 @@ void ControlBar::DoDataExchange(CDataExchange* pDX)
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_BUTTON_PREV, buttonPrev);
 	DDX_Control(pDX, IDC_BUTTON_NEXT, buttonNext);
+	DDX_Control(pDX, IDC_BUTTON_SAVE, buttonSave);
 }
 
 
@@ -37,6 +38,7 @@ BEGIN_MESSAGE_MAP(ControlBar, CDialogEx)
 	ON_BN_CLICKED(IDC_BUTTON_PREV, &ControlBar::OnBnClickedButtonPrev)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &ControlBar::OnBnClickedButtonNext)
 	ON_WM_KEYDOWN()
+	ON_BN_CLICKED(IDC_BUTTON_SAVE, &ControlBar::OnBnClickedButtonSave)
 END_MESSAGE_MAP()
 
 
@@ -55,7 +57,11 @@ BOOL ControlBar::OnInitDialog()
 	image.Load(_T("res\\right-2.ico"));
 	rightBitMap.Attach(image.Detach());
 	buttonNext.SetBitmap(rightBitMap);
-	
+	image.Load(_T("res\\mid-2.ico"));
+	midBitMap.Attach(image.Detach());
+	buttonSave.SetBitmap(midBitMap);
+
+
 	//设置透明度
 	SetWindowLong(this->GetSafeHwnd(), GWL_EXSTYLE,
 		GetWindowLong(this->GetSafeHwnd(), GWL_EXSTYLE) ^ 0x80000);
@@ -67,7 +73,7 @@ BOOL ControlBar::OnInitDialog()
 							//取得SetLayeredWindowAttributes函数指针 
 		func = (MYFUNC)GetProcAddress(hInst, "SetLayeredWindowAttributes");
 		//使用SetLayeredWindowAttributes函数设定透明度
-		if (func)func(this->GetSafeHwnd(), RGB(0, 0, 0), 150, 0x2);
+		if (func)func(this->GetSafeHwnd(), RGB(0, 0, 0), 170, 0x2);
 		FreeLibrary(hInst);
 	}
 
@@ -165,4 +171,15 @@ void ControlBar::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
 		}
 	}
 	CDialogEx::OnKeyDown(nChar, nRepCnt, nFlags);
+}
+
+
+void ControlBar::OnBnClickedButtonSave()
+{
+	// TODO: Add your control notification handler code here
+	CMainFrame *pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
+	CImageClipperView* pView = (CImageClipperView*)pMain->GetActiveView();
+	CImageClipperDoc* pDoc = pView->GetDocument();
+
+	pDoc->saveRectImageInfor();
 }

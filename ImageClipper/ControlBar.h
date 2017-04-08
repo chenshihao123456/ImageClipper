@@ -10,7 +10,7 @@ class ControlBar : public CDialogEx
 public:
 	CBitmap leftBitMap;
 	CBitmap rightBitMap;
-
+	CBitmap midBitMap;
 public:
 	ControlBar(CWnd* pParent = NULL);   // standard constructor
 	virtual ~ControlBar();
@@ -33,4 +33,6 @@ public:
 	//CImageClipperView m;
 	virtual BOOL PreTranslateMessage(MSG* pMsg);
 	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
+	CButton buttonSave;
+	afx_msg void OnBnClickedButtonSave();
 };
