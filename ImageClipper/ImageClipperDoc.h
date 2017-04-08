@@ -5,12 +5,10 @@
 
 #pragma once
 #include <vector>
-enum RectType
-{
-	RED,
-	GREEN,
-	BLUE
-};
+#include "MainFrm.h"
+
+
+
 class MyRectTracker:public CRectTracker
 {
 public:
@@ -18,6 +16,10 @@ public:
 		m_nStyle = CRectTracker::solidLine | CRectTracker::resizeInside;
 		m_rect.NormalizeRect();
 		m_nHandleSize = 8;
+		CMainFrame* frame = (CMainFrame*)AfxGetMainWnd();
+		CString cs;
+		frame->m_combobox.GetWindowText(cs);
+		m_pen_type = cs;
 	}
 
 	int checkHit(CPoint pt)
@@ -31,8 +33,8 @@ public:
 
 public:
 	CRect m_rect_l; //逻辑坐标;
-	BOOL m_is_chosen; //是否被选择
-	RectType type;
+	BOOL m_is_chosen; //是否被选择，用于绘制八个角
+	CString m_pen_type;//矩形框的类型
 };
 
 
@@ -47,16 +49,17 @@ protected: // create from serialization only
 // Attributes
 public:
 	CImage img;
-	CString m_currentImagePath;
+	CString m_currentImagePath;           //当前图片的名字
 	CString m_imageRootPath;
-	std::vector<CString> m_imageNameList;
+	std::vector<CString> m_imageNameList; 
 	int m_index_path_image;
 
 	//保存选择区域的rectTracker;
-	std::vector<MyRectTracker*> m_rectTrackers;
-	int m_index_current_selected;
-	std::vector<MyRectTracker*>::iterator it_current;
+	std::vector<MyRectTracker*> m_rectTrackers;//裁剪的图片坐标
+	int m_index_current_selected;              //切换图片
+	std::vector<MyRectTracker*>::iterator it_current; //删除图片
 
+	
 
 // Operations
 public:

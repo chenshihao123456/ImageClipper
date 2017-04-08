@@ -5,6 +5,7 @@
 #pragma once
 #include <WinUser.h>
 #include "ControlBar.h"
+#include <map>
 
 class CImageClipperView : public CScrollView
 {
@@ -22,7 +23,9 @@ public:
 	CRectTracker m_rectTracker;
 	BOOL m_isChosen;
 	CRect m_rectBox;
-
+	CPen m_penRed;
+	CPen m_penGreen;
+	CPen m_penBlue;
 
 // Operations
 public:

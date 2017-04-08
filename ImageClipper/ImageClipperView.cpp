@@ -50,6 +50,9 @@ CImageClipperView::CImageClipperView()
 	pDlg = new ControlBar();
 	pDlg->Create(IDD_CONTROL_BAR);
 	pDlg->GetWindowRect(&m_rectControl);
+	m_penRed.CreatePen(PS_SOLID, 2, RGB(255, 0, 0));
+	m_penGreen.CreatePen(PS_SOLID, 2, RGB(0, 255, 0));
+	m_penBlue.CreatePen(PS_SOLID, 2, RGB(0, 0, 255));
 }
 
 CImageClipperView::~CImageClipperView()
@@ -115,15 +118,29 @@ void CImageClipperView::OnDraw(CDC* pDC)
 
 	if (!pDoc->m_rectTrackers.empty())
 	{
-		CPen pen(PS_SOLID, 2, RGB(255, 0, 0));
-		pDC->SelectObject(&pen);
 		CBrush *pbrush = CBrush::FromHandle((HBRUSH)GetStockObject(NULL_BRUSH));
 		pDC->SelectObject(pbrush);
 
 		int numRect = pDoc->m_rectTrackers.size();
 		for (int i = 0; i < numRect; i++)
 		{
+			//CPen pen(PS_SOLID, 2, RGB(255, 0, 0));			
+			//pDC->SelectObject(&pen);
 			MyRectTracker *pRectTracker = pDoc->m_rectTrackers[i];
+			if (pRectTracker->m_pen_type.Compare(_T("ºìÉ«"))==0)
+			{
+				pDC->SelectObject(&m_penRed);
+			}
+			else if (pRectTracker->m_pen_type.Compare(_T("ÂÌÉ«")) == 0)
+			{
+				pDC->SelectObject(&m_penGreen);
+			}
+			else if (pRectTracker->m_pen_type.Compare(_T("À¶É«")) == 0)
+			{
+				pDC->SelectObject(&m_penBlue);
+			}
+
+			
 			pRectTracker->getRectDP() = pRectTracker->m_rect_l;
 			pDC->LPtoDP(pRectTracker->getRectDP());
 			if(pRectTracker->m_is_chosen)

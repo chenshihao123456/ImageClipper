@@ -32,7 +32,7 @@ public:
 public:  // control bar embedded members
 	CToolBar          m_wndToolBar;
 	CStatusBar        m_wndStatusBar;
-
+	CComboBox         m_combobox;
 // Generated message map functions
 protected:
 	afx_msg int OnCreate(LPCREATESTRUCT lpCreateStruct);

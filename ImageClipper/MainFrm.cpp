@@ -61,7 +61,16 @@ int CMainFrame::OnCreate(LPCREATESTRUCT lpCreateStruct)
 	m_wndToolBar.EnableDocking(CBRS_ALIGN_ANY);
 	EnableDocking(CBRS_ALIGN_ANY);
 	DockControlBar(&m_wndToolBar);
-
+	CRect rect;
+	m_wndToolBar.SetButtonInfo(8, IDC_COMBOX, TBBS_SEPARATOR, 160);
+	m_wndToolBar.GetItemRect(8, &rect);
+	rect.bottom += 100;
+	m_combobox.Create(CBS_DROPDOWN | WS_VISIBLE | WS_TABSTOP | CBS_AUTOHSCROLL, rect, &m_wndToolBar, IDC_COMBOX);
+	//在组合框中加入字符串 
+	m_combobox.AddString(_T("红色"));
+	m_combobox.AddString(_T("绿色"));
+	m_combobox.AddString(_T("蓝色"));
+	m_combobox.SetCurSel(0);
 
 	return 0;
 }
