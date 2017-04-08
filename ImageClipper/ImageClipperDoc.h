@@ -5,7 +5,12 @@
 
 #pragma once
 #include <vector>
-
+enum RectType
+{
+	RED,
+	GREEN,
+	BLUE
+};
 class MyRectTracker:public CRectTracker
 {
 public:
@@ -27,6 +32,7 @@ public:
 public:
 	CRect m_rect_l; //逻辑坐标;
 	BOOL m_is_chosen; //是否被选择
+	RectType type;
 };
 
 
@@ -49,7 +55,7 @@ public:
 	//保存选择区域的rectTracker;
 	std::vector<MyRectTracker*> m_rectTrackers;
 	int m_index_current_selected;
-
+	std::vector<MyRectTracker*>::iterator it_current;
 
 
 // Operations
@@ -86,4 +92,5 @@ protected:
 #endif // SHARED_HANDLERS
 public:
 	bool GetImage();
+	BOOL deleteRectCurren();
 };

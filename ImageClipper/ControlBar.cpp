@@ -36,6 +36,7 @@ BEGIN_MESSAGE_MAP(ControlBar, CDialogEx)
 	ON_WM_PAINT()
 	ON_BN_CLICKED(IDC_BUTTON_PREV, &ControlBar::OnBnClickedButtonPrev)
 	ON_BN_CLICKED(IDC_BUTTON_NEXT, &ControlBar::OnBnClickedButtonNext)
+	ON_WM_KEYDOWN()
 END_MESSAGE_MAP()
 
 
@@ -122,4 +123,46 @@ void ControlBar::OnBnClickedButtonNext()
 	pDoc->m_index_path_image++;
 	pDoc->loadImage();
 	pView->Invalidate();
+}
+
+
+
+
+
+
+
+BOOL ControlBar::PreTranslateMessage(MSG* pMsg)
+{
+	// TODO: Add your specialized code here and/or call the base class
+	if (pMsg->message==WM_KEYDOWN)
+	{
+		SendMessage(pMsg->message, pMsg->wParam, pMsg->lParam);
+		return TRUE;
+	}
+	else
+	{
+		return CDialogEx::PreTranslateMessage(pMsg);
+	}
+}
+
+
+
+
+void ControlBar::OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags)
+{
+	// TODO: Add your message handler code here and/or call default
+	if (nChar == VK_DELETE)
+	{
+		//AfxMessageBox(_T("delete down"));
+		//É¾³ýËùÑ¡µÄrectTracker
+		CMainFrame *pMain = (CMainFrame *)AfxGetApp()->m_pMainWnd;
+		CImageClipperView* pView = (CImageClipperView*)pMain->GetActiveView();
+		CImageClipperDoc* pDoc = pView->GetDocument();
+		if (pDoc->m_index_current_selected != -1)
+		{
+			pDoc->deleteRectCurren();
+			pView->Invalidate();
+		}
+	}
+	CDialogEx::OnKeyDown(nChar, nRepCnt, nFlags);
 }

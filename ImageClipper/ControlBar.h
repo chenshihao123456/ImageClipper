@@ -31,5 +31,6 @@ public:
 	afx_msg void OnBnClickedButtonNext();
 
 	//CImageClipperView m;
-
+	virtual BOOL PreTranslateMessage(MSG* pMsg);
+	afx_msg void OnKeyDown(UINT nChar, UINT nRepCnt, UINT nFlags);
 };

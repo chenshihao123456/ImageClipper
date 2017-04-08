@@ -111,8 +111,6 @@ void CImageClipperView::OnDraw(CDC* pDC)
 		pDlg->buttonPrev.EnableWindow(TRUE);
 		pDlg->buttonNext.EnableWindow(TRUE);
 	}
-
-
 	//绘制矩形框
 
 	if (!pDoc->m_rectTrackers.empty())
@@ -128,7 +126,8 @@ void CImageClipperView::OnDraw(CDC* pDC)
 			MyRectTracker *pRectTracker = pDoc->m_rectTrackers[i];
 			pRectTracker->getRectDP() = pRectTracker->m_rect_l;
 			pDC->LPtoDP(pRectTracker->getRectDP());
-			pRectTracker->Draw(pDC);
+			if(pRectTracker->m_is_chosen)
+				pRectTracker->Draw(pDC);
 			pDC->Rectangle(pRectTracker->m_rect_l);
 		}
 
@@ -220,6 +219,7 @@ void CImageClipperView::OnMouseMove(UINT nFlags, CPoint point)
 void CImageClipperView::OnLButtonDown(UINT nFlags, CPoint point)
 {
 	// TODO: Add your message handler code here and/or call default
+
 	CClientDC dc(this);
 	OnPrepareDC(&dc);//进行坐标原点的匹配
 	CImageClipperDoc* pDoc = GetDocument();
@@ -233,17 +233,19 @@ void CImageClipperView::OnLButtonDown(UINT nFlags, CPoint point)
 		//选中tracker,操作tracker!
 		if (pRegion->checkHit(point) >= 0)
 		{
+			pRegion->m_is_chosen = TRUE;
 			pDoc->m_index_current_selected = i;
 			if (pRegion->Track(this, point))
 			{
 				pRegion->GetTrueRect(pRegion->m_rect_l);
 				//操作后，重新计算，设备坐标的逻辑坐标
-				dc.DPtoLP(pRegion->m_rect_l);
-				pRegion->m_is_chosen = TRUE;
+				dc.DPtoLP(pRegion->m_rect_l);				
 			}
-			break;
 		}
-		
+		else
+		{
+			pRegion->m_is_chosen = FALSE;
+		}
 	}
 	//没有选择的recttracker
 	if (pDoc->m_index_current_selected == -1)
@@ -260,8 +262,8 @@ void CImageClipperView::OnLButtonDown(UINT nFlags, CPoint point)
 		dc.DPtoLP(pRegion->m_rect_l);
 		pRegion->m_is_chosen = TRUE;
 		pDoc->m_rectTrackers.push_back(pRegion);
+		pDoc->m_index_current_selected = pDoc->m_rectTrackers.size() - 1;
 	}
-
 	Invalidate();
 	CScrollView::OnLButtonDown(nFlags, point);
 }
@@ -275,5 +277,9 @@ void CImageClipperView::OnLButtonUp(UINT nFlags, CPoint point)
 	//m_ptEnd = point;
 	CScrollView::OnLButtonUp(nFlags, point);
 }
+
+
+
+
 
 
