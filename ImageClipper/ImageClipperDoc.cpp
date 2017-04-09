@@ -39,6 +39,7 @@ CImageClipperDoc::CImageClipperDoc()
 	m_rectTrackers.clear();
 	m_index_current_selected = -1;
 	it_current = m_rectTrackers.begin();
+	m_images_clipper_result.clear();
 }
 
 CImageClipperDoc::~CImageClipperDoc()
@@ -64,9 +65,7 @@ CImageClipperDoc::~CImageClipperDoc()
 
 		it_begin++;
 	}
-
-
-
+	m_images_clipper_result.clear();
 }
 
 BOOL CImageClipperDoc::OnNewDocument()
@@ -185,7 +184,8 @@ void CImageClipperDoc::loadImage()
 		it_current = m_rectTrackers.begin();
 
 		CString nameImage = m_currentImagePath.Mid(m_currentImagePath.ReverseFind('\\') + 1);
-		m_rectTrackers = m_images_clipper_result[nameImage];
+		if(m_images_clipper_result.count(nameImage)>0)
+			m_rectTrackers = m_images_clipper_result[nameImage];
 	}
 }
 
@@ -307,6 +307,7 @@ void CImageClipperDoc::freeCurrentImageZone()
 				m_rectTrackers[i] = NULL;
 			}
 		}
+		m_rectTrackers.clear();
 	}
 
 }
