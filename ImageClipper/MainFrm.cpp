@@ -17,6 +17,7 @@ IMPLEMENT_DYNCREATE(CMainFrame, CFrameWnd)
 
 BEGIN_MESSAGE_MAP(CMainFrame, CFrameWnd)
 	ON_WM_CREATE()
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 static UINT indicators[] =
@@ -102,3 +103,16 @@ void CMainFrame::Dump(CDumpContext& dc) const
 
 // CMainFrame message handlers
 
+
+
+void CMainFrame::OnClose()
+{
+	// TODO: Add your message handler code here and/or call default
+
+
+	//AfxMessageBox(_T("save file information"));
+	//保存当前的操作到硬盘
+
+
+	CFrameWnd::OnClose();
+}

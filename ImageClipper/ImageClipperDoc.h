@@ -9,7 +9,6 @@
 #include "MainFrm.h"
 
 
-
 class MyRectTracker:public CRectTracker
 {
 public:
@@ -37,8 +36,6 @@ public:
 	BOOL m_is_chosen; //是否被选择，用于绘制八个角
 	CString m_pen_type;//矩形框的类型
 };
-
-
 
 typedef std::map<CString, std::vector<MyRectTracker*>> images_info;
 typedef std::map<CString, std::vector<MyRectTracker*>>::iterator pimages_info;

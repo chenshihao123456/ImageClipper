@@ -15,6 +15,8 @@
 #include<shlwapi.h>
 #pragma comment(lib,"shlwapi")
 
+#include "IO.h"
+
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -107,7 +109,7 @@ void  CImageClipperDoc::findAllImageFile(CString path, std::vector<CString>& out
 			int length_ext = name.GetLength() - index_dot;
 			CString extension = name.Right(length_ext);
 
-			if (extension.Compare(_T(".jpg")) || extension.Compare(_T(".png")) || extension.Compare(_T(".JPEG")))
+			if (extension.Compare(_T(".jpg"))==0 || extension.Compare(_T(".png"))==0 || extension.Compare(_T(".JPEG"))==0)
 			{
 				CString path = ff.GetFilePath();
 				out_files.push_back(path);
@@ -140,9 +142,7 @@ void CImageClipperDoc::Serialize(CArchive& ar)
 	{
 		// TODO: add storing code here
 		//将内存数据保存到xml中！
-
-
-
+		
 	}
 	else
 	{
@@ -274,6 +274,10 @@ BOOL CImageClipperDoc::deleteRectCurren()
 		m_rectTrackers[m_index_current_selected] = NULL;
 		m_rectTrackers.erase(it_current+= m_index_current_selected);
 		m_index_current_selected = -1;
+
+		CString nameImage = m_currentImagePath.Mid(m_currentImagePath.ReverseFind('\\') + 1);
+		if(m_images_clipper_result.count(nameImage)>0)
+			m_images_clipper_result[nameImage] = m_rectTrackers;
 	}
 	return TRUE;
 }
@@ -286,7 +290,7 @@ bool CImageClipperDoc::saveRectImageInfor()
 	CString nameImage = m_currentImagePath.Mid(m_currentImagePath.ReverseFind('\\')+1);
 	m_images_clipper_result[nameImage] = m_rectTrackers;
 	//并且更新到文件中!
-
+	CIO::saveXML(m_imageRootPath+_T("\\result.xml"), m_images_clipper_result);
 	return true;
 }
 
