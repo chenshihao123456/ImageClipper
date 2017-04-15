@@ -163,10 +163,8 @@ void CImageClipperDoc::Serialize(CArchive& ar)
 		{
 			img.Destroy();
 		}
-		img.Load(m_currentImagePath);
-
-		
-
+		//img.Load(m_currentImagePath);
+		loadImage();
 	}
 }
 
