@@ -153,11 +153,20 @@ void CImageClipperDoc::Serialize(CArchive& ar)
 		if (m_imageNameList.empty())
 			findAllImageFile(m_imageRootPath, m_imageNameList);
 		findIndexImage();
+
+		//加载所画的矩形框!
+		CString pathXML;
+		//pathXML.Format(_T("%s%s"), m_imageRootPath.GetBuffer() , "\\result.xml");
+		pathXML = m_imageRootPath + _T("\\result.xml");
+		CIO::readXML(pathXML, m_images_clipper_result);
 		if (!img.IsNull())
 		{
 			img.Destroy();
 		}
 		img.Load(m_currentImagePath);
+
+		
+
 	}
 }
 
