@@ -27,6 +27,7 @@
 IMPLEMENT_DYNCREATE(CImageClipperDoc, CDocument)
 
 BEGIN_MESSAGE_MAP(CImageClipperDoc, CDocument)
+	ON_COMMAND(ID_EDIT_CUT, &CImageClipperDoc::OnEditCut)
 END_MESSAGE_MAP()
 
 
@@ -70,16 +71,16 @@ CImageClipperDoc::~CImageClipperDoc()
 	m_images_clipper_result.clear();
 }
 
-BOOL CImageClipperDoc::OnNewDocument()
-{
-	if (!CDocument::OnNewDocument())
-		return FALSE;
-
-	// TODO: add reinitialization code here
-	// (SDI documents will reuse this document)
-
-	return TRUE;
-}
+//BOOL CImageClipperDoc::OnNewDocument()
+//{
+//	if (!CDocument::OnNewDocument())
+//		return FALSE;
+//
+//	// TODO: add reinitialization code here
+//	// (SDI documents will reuse this document)
+//
+//	return TRUE;
+//}
 
 
 void  CImageClipperDoc::findAllImageFile(CString path, std::vector<CString>& out_files)
@@ -321,4 +322,75 @@ void CImageClipperDoc::freeCurrentImageZone()
 		m_rectTrackers.clear();
 	}
 
+}
+std::string CImageClipperDoc::convertCString2string(CString i_str)
+{
+	if (i_str.IsEmpty())
+	{
+		return std::string("");
+	}
+	std::string string_std;
+	CT2CA pszConvertedAnsiString(i_str);
+	string_std = pszConvertedAnsiString;
+	return string_std;
+}
+
+void CImageClipperDoc::OnEditCut()
+{
+	// TODO: Add your command handler code here
+	if (m_rectTrackers.empty() || m_currentImagePath.IsEmpty() || m_index_path_image < 0)
+	{
+		return;
+	}
+
+	BROWSEINFO bi;
+	ZeroMemory(&bi, sizeof(BROWSEINFO)); //指定存放文件的默认文件夹路径  
+	bi.ulFlags = BIF_RETURNONLYFSDIRS;
+	bi.lpszTitle = _T("选择文件存放路径");        //添加提示语句  
+	LPMALLOC pMalloc;
+	LPITEMIDLIST pidl = SHBrowseForFolder(&bi);//以默认路径打开浏览文件夹对话框      
+	char szcSavePath[MAX_PATH];
+	CString szSavePath = _T("");
+	if (pidl != NULL)
+	{
+		SHGetPathFromIDList(pidl, (LPWSTR)szcSavePath);//文件夹路径存放入szcSavePath中  
+		szSavePath.Format(_T("%s"), szcSavePath);
+		szSavePath = szSavePath + _T("\\");//在路径后增加斜杠         
+		if (SUCCEEDED(SHGetMalloc(&pMalloc)))
+		{
+			pMalloc->Free(pidl);
+			pMalloc->Release();
+		}
+		if (4 == szSavePath.GetLength())
+		{
+			szSavePath = szSavePath.Left(3);
+		}
+	}
+	//AfxMessageBox(szSavePath);//显示所选文件夹路径  
+
+
+	std::string path_std;
+	path_std = convertCString2string(m_currentImagePath);
+	cv::Mat image = cv::imread(path_std);
+
+	for (int i = 0; i < m_rectTrackers.size(); i++)
+	{
+		cv::Mat result;
+		result = image(cv::Rect(m_rectTrackers[i]->m_rect_l.TopLeft().x,
+			m_rectTrackers[i]->m_rect_l.TopLeft().y,
+			m_rectTrackers[i]->m_rect_l.Width(), 
+			m_rectTrackers[i]->m_rect_l.Height()));
+
+		CTime curTime;
+		SYSTEMTIME st;
+		GetLocalTime(&st);
+		CString strCurTime;
+		strCurTime.Format(_T("%4d%.2d%.2d%.2d%.2d%.2d%.3d"), 
+			st.wYear, st.wMonth, st.wDay, st.wHour, st.wMinute, st.wSecond, st.wMilliseconds);
+		CString result_path;
+
+		result_path = szSavePath + strCurTime + _T(".jpg");
+		cv::imwrite(convertCString2string(result_path), result);
+	}
+	AfxMessageBox(_T("save success!"));
 }

@@ -32,6 +32,7 @@ BEGIN_MESSAGE_MAP(CImageClipperView, CScrollView)
 	ON_WM_MOUSEMOVE()
 	ON_WM_LBUTTONDOWN()
 	ON_WM_LBUTTONUP()
+	ON_UPDATE_COMMAND_UI(ID_EDIT_CUT, &CImageClipperView::OnUpdateEditCut)
 END_MESSAGE_MAP()
 
 // CImageClipperView construction/destruction
@@ -307,3 +308,16 @@ void CImageClipperView::OnLButtonUp(UINT nFlags, CPoint point)
 
 
 
+
+
+void CImageClipperView::OnUpdateEditCut(CCmdUI *pCmdUI)
+{
+	// TODO: Add your command update UI handler code here
+	CClientDC dc(this);
+	OnPrepareDC(&dc);//进行坐标原点的匹配
+	CImageClipperDoc* pDoc = GetDocument();
+	int trackerCount = pDoc->m_rectTrackers.size();
+	BOOL flag = trackerCount > 0?TRUE:FALSE;
+	pCmdUI->Enable(flag);
+
+}

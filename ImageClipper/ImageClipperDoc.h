@@ -8,6 +8,11 @@
 #include <map>
 #include "MainFrm.h"
 
+#include "opencv2\core\core.hpp"
+#include "opencv2\imgproc\imgproc.hpp"
+#include "opencv2\highgui\highgui.hpp"
+
+
 
 class MyRectTracker:public CRectTracker
 {
@@ -68,9 +73,11 @@ public:
 	void findAllImageFile(CString path, std::vector<CString>& out_files);
 	void findIndexImage();
 	void loadImage();
+
+	std::string convertCString2string(CString i_str);
 // Overrides
 public:
-	virtual BOOL OnNewDocument();
+//	virtual BOOL OnNewDocument();
 	virtual void Serialize(CArchive& ar);
 #ifdef SHARED_HANDLERS
 	virtual void InitializeSearchContent();
@@ -102,4 +109,5 @@ public:
 	bool saveRectImageInfor();
 	// 释放当前处理图片的空间
 	void freeCurrentImageZone();
+	afx_msg void OnEditCut();
 };
